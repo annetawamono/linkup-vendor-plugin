@@ -9,4 +9,7 @@ Version: 1.0
 Author URI: https://annetawamono.github.io/portfolio/
 */
 
+// Include luv-functions.php
+require_once plugin_dir_path(__FILE__) . 'includes/luv-functions.php';
+
 ?>
