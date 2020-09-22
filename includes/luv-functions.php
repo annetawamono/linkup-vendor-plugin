@@ -23,7 +23,20 @@ function luv_Create_Vendor_Posttype() {
     array(
       'labels' => array(
         'name' => __( 'Vendors' ),
-        'singular_name' => __( 'Vendor' )
+        'singular_name' => __( 'Vendor' ),
+        'add_new' => __( 'Add New Vendor'),
+        'edit_item' => __( 'Edit Vendor' ),
+        'new_item' => __( 'Add New Vendor' ),
+        'view_item' => __( 'View Vendor' ),
+        'search_item' => __( 'Search Vendor' ),
+        'not_found' => __( 'No vendors found' ),
+        'not_found_in_trash' => __( 'No vendors found in trash' )
+      ),
+      'supports' => array(
+        'title',
+        'editor',
+        'thumbnail',
+        'revisions'
       ),
       'public' => true,
       'has_archive' => true,
