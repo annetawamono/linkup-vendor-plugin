@@ -39,18 +39,82 @@ add_action( 'init', 'luv_Create_Vendor_Posttype' );
  */
 
 function luv_Create_Meta_Boxes() {
-  //short_desc, special_note, phone, email, address, links
-  add_meta_box( 'luv_meta', 'Meta box title', 'luv_meta_callback', 'vendors' );
+
+	add_meta_box(
+		'luv_metabox', // metabox ID
+		'Meta Box', // title
+		'luv_metabox_callback', // callback function
+		'vendors', // post type or post types in array
+		'normal', // position (normal, side, advanced)
+		'default' // priority (default, low, high, core)
+	);
+
 }
-add_action( 'add_meta_boxes', 'luv_Create_Meta_Boxes' );
+//can add this to add_meta_boxes hook too
+add_action( 'admin_menu', 'luv_Create_Meta_Boxes' );
 
 /*
  * Meta box callbacks
  */
 
-function luv_meta_callback( $post ) {
-  echo 'meta hey';
+ function luv_metabox_callback( $post ) {
+
+	$seo_title = get_post_meta( $post->ID, 'seo_title', true );
+
+	// nonce, actually I think it is not necessary here
+	wp_nonce_field( basename(__FILE__), 'luv_nonce' );
+
+	echo '<table class="form-table">
+		<tbody>
+			<tr>
+				<th><label for="seo_title">SEO title</label></th>
+				<td><input type="text" id="seo_title" name="seo_title" value="' . esc_attr( $seo_title ) . '" class="regular-text"></td>
+			</tr>
+		</tbody>
+	</table>';
+
 }
+
+/*
+ * Save meta boxes
+ */
+
+function luv_save_meta( $post_id, $post ) {
+
+	// nonce check
+	if ( ! isset( $_POST[ 'luv_nonce' ] ) || ! wp_verify_nonce( $_POST[ 'luv_nonce' ], basename(__FILE__) ) ) {
+		return $post_id;
+	}
+
+	// check current use permissions
+	$post_type = get_post_type_object( $post->post_type );
+
+	if ( ! current_user_can( $post_type->cap->edit_post, $post_id ) ) {
+		return $post_id;
+	}
+
+	// Do not save the data if autosave
+	if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
+		return $post_id;
+	}
+
+	// define your own post type here
+	if( $post->post_type != 'vendors' ) {
+		return $post_id;
+	}
+
+  //update and delete should happen for every input field
+  //there are different sanitize functions e.g. sanitize_textarea()
+	if( isset( $_POST[ 'seo_title' ] ) ) {
+		update_post_meta( $post_id, 'seo_title', sanitize_text_field( $_POST[ 'seo_title' ] ) );
+	} else {
+		delete_post_meta( $post_id, 'seo_title' );
+	}
+
+	return $post_id;
+}
+//don't know why but parameters 10 and 2 allow you to pass $post to the save function
+ add_action( 'save_post', 'luv_save_meta', 10, 2 );
 
 /*
  * Create shortcode for displaying vendor details in alphabetized list
