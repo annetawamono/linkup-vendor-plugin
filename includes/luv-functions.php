@@ -5,6 +5,7 @@
  */
 
 function luv_Add_Admin_Link() {
+//todo: change labels
   add_menu_page(
     'My First Page', //Title
     'My First Plugin', //Text to show on menu link
@@ -39,8 +40,10 @@ function luv_Create_Vendor_Posttype() {
         'revisions'
       ),
       'public' => true,
+      'show_in_rest' => true,
       'has_archive' => true,
-      'rewrite' => array('slug' => 'vendors'),
+      'rewrite' => array( 'slug' => 'vendors' ),
+      'taxonomies' => array( 'category' ),
       'register_meta_box_cb' => 'luv_Create_Meta_Boxes',
     )
   );
@@ -52,7 +55,7 @@ add_action( 'init', 'luv_Create_Vendor_Posttype' );
  */
 
 function luv_Create_Meta_Boxes() {
-
+//todo: create a metabox called preview information to put on marketplace page
 	add_meta_box(
 		'luv_metabox', // metabox ID
 		'Meta Box', // title
@@ -71,6 +74,7 @@ add_action( 'admin_menu', 'luv_Create_Meta_Boxes' );
  */
 
  function luv_metabox_callback( $post ) {
+//todo: add inputs for preview info
 
 	$seo_title = get_post_meta( $post->ID, 'seo_title', true );
 
@@ -133,6 +137,7 @@ function luv_save_meta( $post_id, $post ) {
  * Create shortcode for displaying vendor details in alphabetized list
  */
 function luv_Display_Vendor_Details() {
+  //todo: output a loop of all the vendors here
   return 'This is an example of a shortcode';
 }
 add_shortcode( 'vendors', 'luv_Display_Vendor_Details' );
