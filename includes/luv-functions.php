@@ -138,7 +138,16 @@ function luv_save_meta( $post_id, $post ) {
  */
 function luv_Display_Vendor_Details() {
   //todo: output a loop of all the vendors here
-  return 'This is an example of a shortcode';
+  //return 'This is an example of a shortcode';
+  $args = array( 'post_type' => 'vendors' );
+  $the_query = new WP_QUery( $args );
+
+  if ($the_query->have_posts()) : while ($the_query->have_posts()) : $the_query->the_post(); ?>
+    <h2 class="vendors-sc-title"><?php the_title() ?></h2>
+  <?php
+  endwhile;
+  endif;
+  wp_reset_postdata();
 }
 add_shortcode( 'vendors', 'luv_Display_Vendor_Details' );
 
