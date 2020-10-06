@@ -74,23 +74,18 @@ add_action( 'admin_menu', 'luv_Create_Meta_Boxes' );
  */
 
  function luv_metabox_callback( $post ) {
-//todo: add inputs for preview info
-
-	$seo_title = get_post_meta( $post->ID, 'seo_title', true );
   $phone_number = get_post_meta( $post->ID, 'phone_number', true );
   $email = get_post_meta( $post->ID, 'email', true );
   $address = get_post_meta( $post->ID, 'address', true );
   $website = get_post_meta( $post->ID, 'website', true );
+  $notes = get_post_meta( $post->ID, 'notes', true );
+  $see_more = get_post_meta( $post->ID, 'see_more', true );
 
 	// nonce, actually I think it is not necessary here
 	wp_nonce_field( plugin_basename(__FILE__), 'luv_nonce' );
 
 	echo '<table class="luv-meta">
 		<tbody>
-			<tr class="luv-metabox">
-				<th><label for="seo_title" class="luv-metabox__label">SEO title</label></th>
-				<td><input type="text" id="seo_title" name="seo_title" value="' . esc_attr( $seo_title ) . '" class="luv-metabox__input"></td>
-			</tr>
       <tr class="luv-metabox">
 				<th><label for="phone_number" class="luv-metabox__label">Phone number</label></th>
 				<td><input type="tel" id="phone_number" name="phone_number" value="' . esc_attr( $phone_number ) . '" class="luv-metabox__input"></td>
@@ -107,6 +102,17 @@ add_action( 'admin_menu', 'luv_Create_Meta_Boxes' );
 				<th><label for="website" class="luv-metabox__label">Website</label></th>
 				<td><input type="text" id="website" name="website" value="' . esc_attr( $website ) . '" class="luv-metabox__input"></td>
 			</tr>
+      <tr class="luv-metabox">
+				<th><label for="website" class="luv-metabox__label">Notes</label></th>
+				<td><textarea id="notes" name="notes" class="luv-metabox__input">' . esc_textarea( $notes ) . '</textarea></td>
+			</tr>
+      <tr class="luv-metabox">
+				<th>Include a link to vendor page?</th>
+			</tr>
+      <tr class="luv-metabox">
+        <td><input type="radio" id="see_more_yes" name="see_more" value="Yes" class="luv-metabox__input" ' . checked( $see_more, 'Yes', false ) . '><label for="see_more_yes">Yes</label></td>
+        <td><input type="radio" id="see_more_no" name="see_more" value="No" class="luv-metabox__input" ' . checked( $see_more, 'No', false ) . '><label for="see_more_no">No</label></td>
+      </tr>
 		</tbody>
 	</table>';
 
@@ -173,12 +179,6 @@ function luv_save_meta( $post_id, $post ) {
 
   //update and delete should happen for every input field
   //there are different sanitize functions e.g. sanitize_textarea()
-	if( isset( $_POST[ 'seo_title' ] ) ) {
-		update_post_meta( $post_id, 'seo_title', sanitize_text_field( $_POST[ 'seo_title' ] ) );
-	} else {
-		delete_post_meta( $post_id, 'seo_title' );
-	}
-
   if( isset( $_POST[ 'phone_number' ] ) ) {
 		update_post_meta( $post_id, 'phone_number', sanitize_text_field( $_POST[ 'phone_number' ] ) );
 	} else {
@@ -219,6 +219,18 @@ function luv_save_meta( $post_id, $post ) {
     delete_transient('settings_errors');
 	}
 
+  if( isset( $_POST[ 'notes' ] ) ) {
+		update_post_meta( $post_id, 'notes', sanitize_textarea_field( $_POST[ 'notes' ] ) );
+	} else {
+		delete_post_meta( $post_id, 'notes' );
+	}
+
+  if( isset( $_POST[ 'see_more' ] ) ) {
+		update_post_meta( $post_id, 'see_more', sanitize_html_class( $_POST[ 'see_more' ] ) );
+	} else {
+		delete_post_meta( $post_id, 'see_more' );
+	}
+
 	return $post_id;
 }
 //don't know why but parameters 10 and 2 allow you to pass $post to the save function
@@ -237,8 +249,11 @@ function luv_Display_Vendor_Details() {
   $the_query = new WP_QUery( $args );
 
   if ($the_query->have_posts()) : while ($the_query->have_posts()) : $the_query->the_post(); ?>
-    <h2 class="vendors-sc-title"><?php the_title() ?></h2>
-    <div class="vendors-sc-meta"><?php the_meta() ?></div>
+    <div class="vendors">
+      <h2 class="vendors-sc-title"><?php the_title() ?></h2>
+      <div class="vendors-sc-meta"><?php the_meta() ?></div>
+      <?php echo wpautop( get_post_meta( get_the_ID(), 'notes', true ) ); ?>
+    </div>
   <?php
   endwhile;
   endif;
