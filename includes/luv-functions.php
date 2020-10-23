@@ -289,7 +289,15 @@ function luv_Display_Vendor_Details() {
   //todo: use order & orderby parameters for alphabetization
   //todo: use esc_url_raw() to output website url
   //return 'This is an example of a shortcode';
-  $args = array( 'post_type' => 'vendors' );
+  $args = array(
+    'post_type' => 'vendors',
+    'tax_query' => array(
+      array(
+        'taxonomy' => 'vendors-vendor-categories',
+        'terms' => 47,
+      ),
+    ),
+  );
   $the_query = new WP_QUery( $args );
 
   if ($the_query->have_posts()) : while ($the_query->have_posts()) : $the_query->the_post(); ?>
@@ -303,6 +311,8 @@ function luv_Display_Vendor_Details() {
   endif;
   wp_reset_postdata();
 
+  // testing category separation
+
   $args2 = array(
     'taxonomy' => 'vendors-vendor-categories',
     'orderby' => 'name',
@@ -310,7 +320,39 @@ function luv_Display_Vendor_Details() {
   );
 
   $cats = get_categories($args2);
-  echo count($cats) . "testing cats";
+
+  foreach ($cats as $cat) {
+    ?>
+      <div>
+        <h2><?php echo $cat->name; ?></h2>
+        <?php
+          $args = array(
+            'post_type' => 'vendors',
+            'tax_query' => array(
+              array(
+                'taxonomy' => 'vendors-vendor-categories',
+                'terms' => $cat->term_id,
+              ),
+            ),
+          );
+          $the_query = new WP_QUery( $args );
+
+          if ($the_query->have_posts()) : while ($the_query->have_posts()) : $the_query->the_post(); ?>
+            <div class="vendors">
+              <h2 class="vendors-sc-title"><?php the_title() ?></h2>
+              <div class="vendors-sc-meta"><?php the_meta() ?></div>
+              <?php echo wpautop( get_post_meta( get_the_ID(), 'notes', true ) ); ?>
+            </div>
+          <?php
+          endwhile;
+          endif;
+          wp_reset_postdata();
+        ?>
+      </div>
+    <?php
+  }
+
+  // echo count($cats) . "testing cats. the slug " . $cats[0]->term_id;
 }
 add_shortcode( 'vendors', 'luv_Display_Vendor_Details' );
 
