@@ -283,33 +283,12 @@ function luv_save_meta( $post_id, $post ) {
 /*
  * Create shortcode for displaying vendor details in alphabetized list and in their categories
  */
+
 function luv_Display_Vendor_Details() {
   //doing: use tax_query arg to group vendors -> create custom taxonomy
   //todo: output a loop of all the vendors here
   //todo: use order & orderby parameters for alphabetization
   //todo: use esc_url_raw() to output website url
-  //return 'This is an example of a shortcode';
-  $args = array(
-    'post_type' => 'vendors',
-    'tax_query' => array(
-      array(
-        'taxonomy' => 'vendors-vendor-categories',
-        'terms' => 47,
-      ),
-    ),
-  );
-  $the_query = new WP_QUery( $args );
-
-  if ($the_query->have_posts()) : while ($the_query->have_posts()) : $the_query->the_post(); ?>
-    <div class="vendors">
-      <h2 class="vendors-sc-title"><?php the_title() ?></h2>
-      <div class="vendors-sc-meta"><?php the_meta() ?></div>
-      <?php echo wpautop( get_post_meta( get_the_ID(), 'notes', true ) ); ?>
-    </div>
-  <?php
-  endwhile;
-  endif;
-  wp_reset_postdata();
 
   // testing category separation
 
@@ -326,27 +305,7 @@ function luv_Display_Vendor_Details() {
       <div>
         <h2><?php echo $cat->name; ?></h2>
         <?php
-          $args = array(
-            'post_type' => 'vendors',
-            'tax_query' => array(
-              array(
-                'taxonomy' => 'vendors-vendor-categories',
-                'terms' => $cat->term_id,
-              ),
-            ),
-          );
-          $the_query = new WP_QUery( $args );
-
-          if ($the_query->have_posts()) : while ($the_query->have_posts()) : $the_query->the_post(); ?>
-            <div class="vendors">
-              <h2 class="vendors-sc-title"><?php the_title() ?></h2>
-              <div class="vendors-sc-meta"><?php the_meta() ?></div>
-              <?php echo wpautop( get_post_meta( get_the_ID(), 'notes', true ) ); ?>
-            </div>
-          <?php
-          endwhile;
-          endif;
-          wp_reset_postdata();
+          luv_Display_Vendor_By_Category($cat->term_id);
         ?>
       </div>
     <?php
@@ -355,5 +314,34 @@ function luv_Display_Vendor_Details() {
   // echo count($cats) . "testing cats. the slug " . $cats[0]->term_id;
 }
 add_shortcode( 'vendors', 'luv_Display_Vendor_Details' );
+
+/*
+ * Create shortcode for displaying vendor details in alphabetized list and in their categories
+ * params: $term_id -> taxonomy term id
+ */
+
+function luv_Display_Vendor_By_Category($term_id) {
+  $args = array(
+    'post_type' => 'vendors',
+    'tax_query' => array(
+      array(
+        'taxonomy' => 'vendors-vendor-categories',
+        'terms' => $term_id,
+      ),
+    ),
+  );
+  $the_query = new WP_QUery( $args );
+
+  if ($the_query->have_posts()) : while ($the_query->have_posts()) : $the_query->the_post(); ?>
+    <div class="vendors">
+      <h3 class="vendors-sc-title"><?php the_title() ?></h3>
+      <div class="vendors-sc-meta"><?php the_meta() ?></div>
+      <?php echo wpautop( get_post_meta( get_the_ID(), 'notes', true ) ); ?>
+    </div>
+  <?php
+  endwhile;
+  endif;
+  wp_reset_postdata();
+}
 
 ?>
