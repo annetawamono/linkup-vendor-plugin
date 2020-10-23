@@ -43,7 +43,7 @@ function luv_Create_Vendor_Posttype() {
       'show_in_rest' => true,
       'has_archive' => true,
       'rewrite' => array( 'slug' => 'vendors' ),
-      'taxonomies' => array( 'category' ),
+      // 'taxonomies' => array( 'vendor categories' ),
       'register_meta_box_cb' => 'luv_Create_Meta_Boxes',
     )
   );
@@ -55,7 +55,6 @@ add_action( 'init', 'luv_Create_Vendor_Posttype' );
  */
 
 function luv_Create_Meta_Boxes() {
-//todo: create a metabox called preview information to put on marketplace page
 	add_meta_box(
 		'luv_metabox', // metabox ID
 		'Preview Information', // title
@@ -236,12 +235,57 @@ function luv_save_meta( $post_id, $post ) {
 //don't know why but parameters 10 and 2 allow you to pass $post to the save function
  add_action( 'save_post', 'luv_save_meta', 10, 2 );
 
+
+ /*
+  * Custom Vendor Taxonomy
+  */
+
+  // Register Custom Taxonomy
+  function luv_Create_Vendor_Taxonomy() {
+
+  	$labels = array(
+  		'name'                       => 'Vendor Categories',
+  		'singular_name'              => 'Vendor Category',
+  		'menu_name'                  => 'Vendor Categories',
+  		'all_items'                  => 'All Vendor Categories',
+  		'parent_item'                => 'Parent Vendor Category',
+  		'parent_item_colon'          => 'Parent Vendor Category:',
+  		'new_item_name'              => 'New Vendor Category Name',
+  		'add_new_item'               => 'Add New Vendor Category',
+  		'edit_item'                  => 'Edit Vendor Category',
+  		'update_item'                => 'Update Vendor Category',
+  		'view_item'                  => 'View Vendor Category',
+  		'separate_items_with_commas' => 'Separate Vendor Categories with commas',
+  		'add_or_remove_items'        => 'Add or remove Vendor Categories',
+  		'choose_from_most_used'      => 'Choose from the most used',
+  		'popular_items'              => 'Popular Vendor Categories',
+  		'search_items'               => 'Search Vendor Categories',
+  		'not_found'                  => 'Not Found',
+  		'no_terms'                   => 'No Vendor Categories',
+  		'items_list'                 => 'Vendor Categories list',
+  		'items_list_navigation'      => 'Vendor Categories list navigation',
+  	);
+  	$args = array(
+  		'labels'                     => $labels,
+  		'hierarchical'               => true,
+  		'public'                     => true,
+  		'show_ui'                    => true,
+  		'show_admin_column'          => true,
+  		'show_in_nav_menus'          => true,
+  		'show_tagcloud'              => true,
+  		'show_in_rest'               => true,
+  	);
+  	register_taxonomy( 'vendors-vendor-categories', array( 'vendors' ), $args );
+
+  }
+  add_action( 'init', 'luv_Create_Vendor_Taxonomy', 0 );
+
 /*
  * Create shortcode for displaying vendor details in alphabetized list and in their categories
  */
 function luv_Display_Vendor_Details() {
+  //doing: use tax_query arg to group vendors -> create custom taxonomy
   //todo: output a loop of all the vendors here
-  //todo: use tax_query arg to group vendors
   //todo: use order & orderby parameters for alphabetization
   //todo: use esc_url_raw() to output website url
   //return 'This is an example of a shortcode';
@@ -258,6 +302,15 @@ function luv_Display_Vendor_Details() {
   endwhile;
   endif;
   wp_reset_postdata();
+
+  $args2 = array(
+    'taxonomy' => 'vendors-vendor-categories',
+    'orderby' => 'name',
+    'order' => 'ASC',
+  );
+
+  $cats = get_categories($args2);
+  echo count($cats) . "testing cats";
 }
 add_shortcode( 'vendors', 'luv_Display_Vendor_Details' );
 
