@@ -285,10 +285,9 @@ function luv_save_meta( $post_id, $post ) {
  */
 
 function luv_Display_Vendor_Details() {
-  //doing: use tax_query arg to group vendors -> create custom taxonomy
-  //todo: output a loop of all the vendors here
-  //todo: use order & orderby parameters for alphabetization
+  //doing: vendor page styling
   //todo: use esc_url_raw() to output website url
+  //todo: see more link for vendors with that option checked
 
   // testing category separation
 
@@ -302,11 +301,15 @@ function luv_Display_Vendor_Details() {
 
   foreach ($cats as $cat) {
     ?>
-      <div>
-        <h2><?php echo $cat->name; ?></h2>
+      <div class="luv-container">
+        <div class="luv-category-title">
+          <h2><?php echo $cat->name; ?></h2>
+        </div>
+        <div class="luv-vendors">
         <?php
           luv_Display_Vendor_By_Category($cat->term_id);
         ?>
+        </div>
       </div>
     <?php
   }
@@ -317,6 +320,7 @@ add_shortcode( 'vendors', 'luv_Display_Vendor_Details' );
 
 /*
  * Create shortcode for displaying vendor details in alphabetized list and in their categories
+ *
  * params: $term_id -> taxonomy term id
  */
 
@@ -329,14 +333,19 @@ function luv_Display_Vendor_By_Category($term_id) {
         'terms' => $term_id,
       ),
     ),
+    'orderby' => 'title',
+    'order' => 'ASC',
   );
   $the_query = new WP_QUery( $args );
 
   if ($the_query->have_posts()) : while ($the_query->have_posts()) : $the_query->the_post(); ?>
-    <div class="vendors">
-      <h3 class="vendors-sc-title"><?php the_title() ?></h3>
-      <div class="vendors-sc-meta"><?php the_meta() ?></div>
-      <?php echo wpautop( get_post_meta( get_the_ID(), 'notes', true ) ); ?>
+    <div class="luv-vendor">
+      <h3 class="luv-vendor-sc-title"><?php the_title() ?></h3>
+      <div class="luv-vendor-sc-meta"><?php the_meta() ?></div>
+      <?php
+        // getting individual post meta
+        echo wpautop( get_post_meta( get_the_ID(), 'notes', true ) );
+      ?>
     </div>
   <?php
   endwhile;
