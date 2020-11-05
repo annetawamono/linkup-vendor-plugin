@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Adds top level menu link to the ACP
  */
 
@@ -15,7 +15,7 @@ function luv_Add_Admin_Link() {
 }
 add_action( 'admin_menu', 'luv_Add_Admin_Link' );
 
-/*
+/**
  * Create vendor post type
  */
 
@@ -50,7 +50,7 @@ function luv_Create_Vendor_Posttype() {
 }
 add_action( 'init', 'luv_Create_Vendor_Posttype' );
 
-/*
+/**
  * Create meta boxes for vendors
  */
 
@@ -68,15 +68,18 @@ function luv_Create_Meta_Boxes() {
 //can add this to add_meta_boxes hook too
 add_action( 'admin_menu', 'luv_Create_Meta_Boxes' );
 
-/*
+/**
  * Meta box callbacks
  */
 
  function luv_metabox_callback( $post ) {
+   //doing: add additional links metaboxes
+
   $phone_number = get_post_meta( $post->ID, 'phone_number', true );
   $email = get_post_meta( $post->ID, 'email', true );
   $address = get_post_meta( $post->ID, 'address', true );
   $website = get_post_meta( $post->ID, 'website', true );
+  //$addlinks = get_post_meta( $post->ID, 'addlinks', true );
   $notes = get_post_meta( $post->ID, 'notes', true );
   $see_more = get_post_meta( $post->ID, 'see_more', true );
 
@@ -117,7 +120,7 @@ add_action( 'admin_menu', 'luv_Create_Meta_Boxes' );
 
 }
 
-/*
+/**
  * Meta box error handling
  */
 
@@ -148,7 +151,7 @@ add_action( 'admin_menu', 'luv_Create_Meta_Boxes' );
    set_transient('settings_errors', get_settings_errors(), 0);
  }
 
-/*
+/**
  * Save meta boxes
  */
 
@@ -236,7 +239,7 @@ function luv_save_meta( $post_id, $post ) {
  add_action( 'save_post', 'luv_save_meta', 10, 2 );
 
 
- /*
+ /**
   * Custom Vendor Taxonomy
   */
 
@@ -280,7 +283,7 @@ function luv_save_meta( $post_id, $post ) {
   }
   add_action( 'init', 'luv_Create_Vendor_Taxonomy', 0 );
 
-/*
+/**
  * Create shortcode for displaying vendor details in alphabetized list and in their categories
  */
 
@@ -318,11 +321,12 @@ function luv_Display_Vendor_Details() {
 }
 add_shortcode( 'vendors', 'luv_Display_Vendor_Details' );
 
-/*
- * Create shortcode for displaying vendor details in alphabetized list and in their categories
- *
- * params: $term_id -> taxonomy term id
- */
+ /**
+  * Create shortcode for displaying vendor details in alphabetized list and in their categories
+  *
+  * @param integer $term_id Taxonomy term ID
+  * @return void
+  */
 
 function luv_Display_Vendor_By_Category($term_id) {
   $args = array(
@@ -340,12 +344,42 @@ function luv_Display_Vendor_By_Category($term_id) {
 
   if ($the_query->have_posts()) : while ($the_query->have_posts()) : $the_query->the_post(); ?>
     <div class="luv-vendor">
-      <h3 class="luv-vendor-sc-title"><?php the_title() ?></h3>
-      <div class="luv-vendor-sc-meta"><?php the_meta() ?></div>
-      <?php
-        // getting individual post meta
-        echo wpautop( get_post_meta( get_the_ID(), 'notes', true ) );
-      ?>
+      <div class="luv-vendor__details">
+        <h3 class="luv-vendor__details__title"><?php the_title() ?></h3>
+        <?php
+          // getting individual post meta
+          echo wpautop( get_post_meta( get_the_ID(), 'notes', true ) );
+        ?>
+        <address>
+
+          <?php if($pn = get_post_meta( get_the_ID(), 'phone_number', true )): ?>
+            <p class="luv-vendor__details__phone">Phone:</p>
+            <p><a href="tel:<?php echo esc_html( $pn ); ?>">
+              <?php
+                echo esc_html( $pn );
+              ?>
+            </a></p>
+          <?php endif ?>
+
+          <?php if($email = get_post_meta( get_the_ID(), 'email', true )): ?>
+            <p class="luv-vendor__details__email">Email:</p>
+            <p><a href="mailto:<?php echo antispambot( $email ); ?>">
+              <?php
+                echo antispambot( $email );
+              ?>
+            </a></p>
+          <?php endif ?>
+
+          <?php if($address = get_post_meta( get_the_ID(), 'address', true )): ?>
+          <p class="luv-vendor__details__address">Address:</p>
+          <?php
+            // getting individual post meta
+            echo wpautop( $address );
+          ?>
+          <?php endif ?>
+
+      </address>
+      </div>
     </div>
   <?php
   endwhile;
