@@ -79,7 +79,18 @@ add_action( 'admin_menu', 'luv_Create_Meta_Boxes' );
   $email = get_post_meta( $post->ID, 'email', true );
   $address = get_post_meta( $post->ID, 'address', true );
   $website = get_post_meta( $post->ID, 'website', true );
-  //$addlinks = get_post_meta( $post->ID, 'addlinks', true );
+
+  $addlink1 = get_post_meta( $post->ID, 'addlink1', true );
+  $addlink1text = get_post_meta( $post->ID, 'addlink1text', true );
+  $addlink2 = get_post_meta( $post->ID, 'addlink2', true );
+  $addlink2text = get_post_meta( $post->ID, 'addlink2text', true );
+  $addlink3 = get_post_meta( $post->ID, 'addlink3', true );
+  $addlink3text = get_post_meta( $post->ID, 'addlink3text', true );
+  $facebook = get_post_meta( $post->ID, 'facebook', true );
+  $twitter = get_post_meta( $post->ID, 'twitter', true );
+  $instagram = get_post_meta( $post->ID, 'instagram', true );
+  $youtube = get_post_meta( $post->ID, 'youtube', true );
+
   $notes = get_post_meta( $post->ID, 'notes', true );
   $see_more = get_post_meta( $post->ID, 'see_more', true );
 
@@ -101,12 +112,52 @@ add_action( 'admin_menu', 'luv_Create_Meta_Boxes' );
 				<td><input type="text" id="address" name="address" value="' . esc_attr( $address ) . '" class="luv-metabox__input"></td>
 			</tr>
       <tr class="luv-metabox">
-				<th><label for="website" class="luv-metabox__label">Website</label></th>
+				<th><label for="website" class="luv-metabox__label">Website URL</label></th>
 				<td><input type="text" id="website" name="website" value="' . esc_attr( $website ) . '" class="luv-metabox__input"></td>
+			</tr>
+      <tr class="luv-metabox">
+				<th><label for="addlink1text" class="luv-metabox__label">Additional link 1 text</label></th>
+				<td><input type="text" id="addlink1text" name="addlink1text" value="' . esc_attr( $addlink1text ) . '" class="luv-metabox__input"></td>
+			</tr>
+      <tr class="luv-metabox">
+				<th><label for="addlink1" class="luv-metabox__label">Additional link 1 URL</label></th>
+				<td><input type="text" id="addlink1" name="addlink1" value="' . esc_attr( $addlink1 ) . '" class="luv-metabox__input"></td>
+			</tr>
+      <tr class="luv-metabox">
+				<th><label for="addlink2text" class="luv-metabox__label">Additional link 2 text</label></th>
+				<td><input type="text" id="addlink2text" name="addlink2text" value="' . esc_attr( $addlink2text ) . '" class="luv-metabox__input"></td>
+			</tr>
+      <tr class="luv-metabox">
+				<th><label for="addlink2" class="luv-metabox__label">Additional link 2 URL</label></th>
+				<td><input type="text" id="addlink2" name="addlink2" value="' . esc_attr( $addlink2 ) . '" class="luv-metabox__input"></td>
+			</tr>
+      <tr class="luv-metabox">
+				<th><label for="addlink3text" class="luv-metabox__label">Additional link 3 text</label></th>
+				<td><input type="text" id="addlink3text" name="addlink3text" value="' . esc_attr( $addlink3text ) . '" class="luv-metabox__input"></td>
+			</tr>
+      <tr class="luv-metabox">
+				<th><label for="addlink3" class="luv-metabox__label">Additional link 3 URL</label></th>
+				<td><input type="text" id="addlink3" name="addlink3" value="' . esc_attr( $addlink3 ) . '" class="luv-metabox__input"></td>
 			</tr>
       <tr class="luv-metabox">
 				<th><label for="website" class="luv-metabox__label">Notes</label></th>
 				<td><textarea id="notes" name="notes" class="luv-metabox__input">' . esc_textarea( $notes ) . '</textarea></td>
+			</tr>
+      <tr class="luv-metabox">
+				<th><label for="facebook" class="luv-metabox__label">Facebook</label></th>
+				<td><input type="text" id="facebook" name="facebook" value="' . esc_attr( $facebook ) . '" class="luv-metabox__input"></td>
+			</tr>
+      <tr class="luv-metabox">
+				<th><label for="twitter" class="luv-metabox__label">Twitter</label></th>
+				<td><input type="text" id="twitter" name="twitter" value="' . esc_attr( $twitter ) . '" class="luv-metabox__input"></td>
+			</tr>
+      <tr class="luv-metabox">
+				<th><label for="instagram" class="luv-metabox__label">Instagram</label></th>
+				<td><input type="text" id="instagram" name="instagram" value="' . esc_attr( $instagram ) . '" class="luv-metabox__input"></td>
+			</tr>
+      <tr class="luv-metabox">
+				<th><label for="youtube" class="luv-metabox__label">Youtube</label></th>
+				<td><input type="text" id="youtube" name="youtube" value="' . esc_attr( $youtube ) . '" class="luv-metabox__input"></td>
 			</tr>
       <tr class="luv-metabox">
 				<th>Include a link to vendor page?</th>
@@ -218,6 +269,123 @@ function luv_save_meta( $post_id, $post ) {
     }
 	} else {
 		delete_post_meta( $post_id, 'website' );
+    delete_transient('settings_errors');
+	}
+
+
+  if( isset( $_POST[ 'addlink1text' ] ) ) {
+		update_post_meta( $post_id, 'addlink1text', sanitize_text_field( $_POST[ 'addlink1text' ] ) );
+	} else {
+		delete_post_meta( $post_id, 'addlink1text' );
+	}
+
+  // form validation for additional link 1 URL
+  if( isset( $_POST[ 'addlink1' ] ) && $_POST[ 'addlink1' ] != '' ) {
+    if(!(wp_http_validate_url( $_POST[ 'addlink1' ] ))) {
+      luv_meta_error('invalid_url', "Error in Vendor: " . $post->post_title . ". Your additional link URL isn't valid. Please enter a valid URL.");
+      delete_post_meta( $post_id, 'addlink1' );
+    } else {
+      update_post_meta( $post_id, 'addlink1', sanitize_text_field( $_POST[ 'addlink1' ] ) );
+      delete_transient('settings_errors');
+    }
+	} else {
+		delete_post_meta( $post_id, 'addlink1' );
+    delete_transient('settings_errors');
+	}
+
+  if( isset( $_POST[ 'addlink2text' ] ) ) {
+		update_post_meta( $post_id, 'addlink2text', sanitize_text_field( $_POST[ 'addlink2text' ] ) );
+	} else {
+		delete_post_meta( $post_id, 'addlink2text' );
+	}
+
+  // form validation for additional link 2 URL
+  if( isset( $_POST[ 'addlink2' ] ) && $_POST[ 'addlink2' ] != '' ) {
+    if(!(wp_http_validate_url( $_POST[ 'addlink2' ] ))) {
+      luv_meta_error('invalid_url', "Error in Vendor: " . $post->post_title . ". Your additional link URL isn't valid. Please enter a valid URL.");
+      delete_post_meta( $post_id, 'addlink2' );
+    } else {
+      update_post_meta( $post_id, 'addlink2', sanitize_text_field( $_POST[ 'addlink2' ] ) );
+      delete_transient('settings_errors');
+    }
+	} else {
+		delete_post_meta( $post_id, 'addlink2' );
+    delete_transient('settings_errors');
+	}
+
+  if( isset( $_POST[ 'addlink3text' ] ) ) {
+		update_post_meta( $post_id, 'addlink3text', sanitize_text_field( $_POST[ 'addlink3text' ] ) );
+	} else {
+		delete_post_meta( $post_id, 'addlink3text' );
+	}
+
+  // form validation for additional link 3 URL
+  if( isset( $_POST[ 'addlink3' ] ) && $_POST[ 'addlink3' ] != '' ) {
+    if(!(wp_http_validate_url( $_POST[ 'addlink3' ] ))) {
+      luv_meta_error('invalid_url', "Error in Vendor: " . $post->post_title . ". Your additional link URL isn't valid. Please enter a valid URL.");
+      delete_post_meta( $post_id, 'addlink3' );
+    } else {
+      update_post_meta( $post_id, 'addlink3', sanitize_text_field( $_POST[ 'addlink3' ] ) );
+      delete_transient('settings_errors');
+    }
+	} else {
+		delete_post_meta( $post_id, 'addlink3' );
+    delete_transient('settings_errors');
+	}
+
+  // form validation for facebook URL
+  if( isset( $_POST[ 'facebook' ] ) && $_POST[ 'facebook' ] != '' ) {
+    if(!(wp_http_validate_url( $_POST[ 'facebook' ] ))) {
+      luv_meta_error('invalid_url', "Error in Vendor: " . $post->post_title . ". Your facebook URL isn't valid. Please enter a valid URL.");
+      delete_post_meta( $post_id, 'facebook' );
+    } else {
+      update_post_meta( $post_id, 'facebook', sanitize_text_field( $_POST[ 'facebook' ] ) );
+      delete_transient('settings_errors');
+    }
+	} else {
+		delete_post_meta( $post_id, 'facebook' );
+    delete_transient('settings_errors');
+	}
+
+  // form validation for twitter URL
+  if( isset( $_POST[ 'twitter' ] ) && $_POST[ 'twitter' ] != '' ) {
+    if(!(wp_http_validate_url( $_POST[ 'twitter' ] ))) {
+      luv_meta_error('invalid_url', "Error in Vendor: " . $post->post_title . ". Your twitter URL isn't valid. Please enter a valid URL.");
+      delete_post_meta( $post_id, 'twitter' );
+    } else {
+      update_post_meta( $post_id, 'twitter', sanitize_text_field( $_POST[ 'twitter' ] ) );
+      delete_transient('settings_errors');
+    }
+	} else {
+		delete_post_meta( $post_id, 'twitter' );
+    delete_transient('settings_errors');
+	}
+
+  // form validation for instagram URL
+  if( isset( $_POST[ 'instagram' ] ) && $_POST[ 'instagram' ] != '' ) {
+    if(!(wp_http_validate_url( $_POST[ 'instagram' ] ))) {
+      luv_meta_error('invalid_url', "Error in Vendor: " . $post->post_title . ". Your instagram URL isn't valid. Please enter a valid URL.");
+      delete_post_meta( $post_id, 'instagram' );
+    } else {
+      update_post_meta( $post_id, 'instagram', sanitize_text_field( $_POST[ 'instagram' ] ) );
+      delete_transient('settings_errors');
+    }
+	} else {
+		delete_post_meta( $post_id, 'instagram' );
+    delete_transient('settings_errors');
+	}
+
+  // form validation for youtube URL
+  if( isset( $_POST[ 'youtube' ] ) && $_POST[ 'youtube' ] != '' ) {
+    if(!(wp_http_validate_url( $_POST[ 'youtube' ] ))) {
+      luv_meta_error('invalid_url', "Error in Vendor: " . $post->post_title . ". Your youtube URL isn't valid. Please enter a valid URL.");
+      delete_post_meta( $post_id, 'youtube' );
+    } else {
+      update_post_meta( $post_id, 'youtube', sanitize_text_field( $_POST[ 'youtube' ] ) );
+      delete_transient('settings_errors');
+    }
+	} else {
+		delete_post_meta( $post_id, 'youtube' );
     delete_transient('settings_errors');
 	}
 
@@ -348,7 +516,7 @@ function luv_Display_Vendor_By_Category($term_id) {
         <h3 class="luv-vendor__details__title"><?php the_title() ?></h3>
         <?php
           // getting individual post meta
-          echo wpautop( get_post_meta( get_the_ID(), 'notes', true ) );
+          echo wpautop( esc_html( get_post_meta( get_the_ID(), 'notes', true ) ) );
         ?>
         <address>
 
@@ -371,11 +539,77 @@ function luv_Display_Vendor_By_Category($term_id) {
           <?php endif ?>
 
           <?php if($address = get_post_meta( get_the_ID(), 'address', true )): ?>
-          <p class="luv-vendor__details__address">Address:</p>
+            <p class="luv-vendor__details__address">Address:</p>
+            <?php
+              // getting individual post meta
+              echo wpautop( $address );
+            ?>
+          <?php endif ?>
+
           <?php
-            // getting individual post meta
-            echo wpautop( $address );
-          ?>
+            $website = get_post_meta( get_the_ID(), 'website', true );
+            $addlink1 = get_post_meta( get_the_ID(), 'addlink1', true );
+            $addlink2 = get_post_meta( get_the_ID(), 'addlink2', true );
+            $addlink3 = get_post_meta( get_the_ID(), 'addlink3', true );
+            $facebook = get_post_meta( get_the_ID(), 'facebook', true ) ;
+            $twitter = get_post_meta( get_the_ID(), 'twitter', true );
+            $instagram = get_post_meta( get_the_ID(), 'instagram', true );
+            $youtube = get_post_meta( get_the_ID(), 'youtube', true );
+           ?>
+
+          <?php if(
+            $website || $addlink1 || $addlink2 || $addlink3 || $facebook || $twitter || $instagram || $youtube
+            ): ?>
+
+            <p class="luv-vendor__details__email">Our Links:</p>
+            <?php if($website): ?>
+              <p><a href="<?php echo esc_url( $website ); ?>">
+                Website
+              </a></p>
+            <?php endif ?>
+
+            <?php if($addlink1): ?>
+              <p><a href="<?php echo esc_url( $addlink1 ); ?>">
+                <?php echo esc_html( get_post_meta( get_the_ID(), 'addlink1text', true ) ); ?>
+              </a></p>
+            <?php endif ?>
+
+            <?php if($addlink2): ?>
+              <p><a href="<?php echo esc_url( $addlink2 ); ?>">
+                <?php echo esc_html( get_post_meta( get_the_ID(), 'addlink2text', true ) ); ?>
+              </a></p>
+            <?php endif ?>
+
+            <?php if($addlink3): ?>
+              <p><a href="<?php echo esc_url( $addlink3 ); ?>">
+                <?php echo esc_html( get_post_meta( get_the_ID(), 'addlink3text', true ) ); ?>
+              </a></p>
+            <?php endif ?>
+
+            <?php if($facebook): ?>
+              <p><a href="<?php echo esc_url( $facebook ); ?>">
+                Facebook
+              </a></p>
+            <?php endif ?>
+
+            <?php if($twitter): ?>
+              <p><a href="<?php echo esc_url( $twitter ); ?>">
+                Twitter
+              </a></p>
+            <?php endif ?>
+
+            <?php if($instagram): ?>
+              <p><a href="<?php echo esc_url( $instagram ); ?>">
+                Instagram
+              </a></p>
+            <?php endif ?>
+
+            <?php if($youtube): ?>
+              <p><a href="<?php echo esc_url( $youtube ); ?>">
+                Youtube
+              </a></p>
+            <?php endif ?>
+
           <?php endif ?>
 
       </address>
