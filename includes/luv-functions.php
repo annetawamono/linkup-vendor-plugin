@@ -512,6 +512,9 @@ function luv_Display_Vendor_By_Category($term_id) {
 
   if ($the_query->have_posts()) : while ($the_query->have_posts()) : $the_query->the_post(); ?>
     <div class="luv-vendor">
+      <div class="luv-vendor__image">
+        <?php echo get_the_post_thumbnail( get_the_ID() ); ?>
+      </div>
       <div class="luv-vendor__details">
         <h3 class="luv-vendor__details__title"><?php the_title() ?></h3>
         <?php
@@ -610,6 +613,12 @@ function luv_Display_Vendor_By_Category($term_id) {
               </a></p>
             <?php endif ?>
 
+          <?php endif ?>
+
+          <?php if( get_post_meta( get_the_ID(), 'see_more', true ) == 'Yes' ): ?>
+            <p><a href="<?php echo esc_url( get_permalink(get_the_ID()) ); ?>">
+              See more
+            </a></p>
           <?php endif ?>
 
       </address>
