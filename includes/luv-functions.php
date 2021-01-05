@@ -562,7 +562,7 @@ function luv_Display_Vendor_By_Category($term_id) {
             $website || $addlink1 || $addlink2 || $addlink3 || $facebook || $twitter || $instagram || $youtube
             ): ?>
 
-            <p class="luv-vendor__details__email">Our Links:</p>
+            <p class="luv-vendor__details__links">Our Links:</p>
             <?php if($website): ?>
               <p><a href="<?php echo esc_url( $website ); ?>">
                 Website
