@@ -73,7 +73,6 @@ add_action( 'admin_menu', 'luv_Create_Meta_Boxes' );
  */
 
  function luv_metabox_callback( $post ) {
-   //doing: add additional links metaboxes
 
   $phone_number = get_post_meta( $post->ID, 'phone_number', true );
   $email = get_post_meta( $post->ID, 'email', true );
@@ -458,7 +457,6 @@ function luv_save_meta( $post_id, $post ) {
 function luv_Display_Vendor_Details() {
   //doing: vendor page styling
   //todo: use esc_url_raw() to output website url
-  //todo: see more link for vendors with that option checked
 
   // testing category separation
 
