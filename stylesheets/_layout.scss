@@ -47,7 +47,7 @@
       &__title {
         font-size: 22px;
       }
-      &__phone, &__email, &__address, &__links {
+      &__phone, &__email, &__address, &__links, &__seemore {
         margin-bottom: 0;
         font-weight: bold !important;
       }
@@ -57,6 +57,18 @@
 
 @media #{$lg} {
   .luv-vendors {
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 49% 49%;
+    column-gap: 2%;
+    .luv-vendor {
+      display: grid;
+      grid-template-columns: auto 55%;
+      &__image {
+        display: block;
+        align-self: center;
+        position: relative;
+        width: 150%;
+        z-index: -1;
+      }
+    }
   }
 }

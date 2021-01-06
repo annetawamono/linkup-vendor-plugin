@@ -44,14 +44,26 @@
 .luv-vendors .luv-vendor__details__title {
   font-size: 22px;
 }
-.luv-vendors .luv-vendor__details__phone, .luv-vendors .luv-vendor__details__email, .luv-vendors .luv-vendor__details__address, .luv-vendors .luv-vendor__details__links {
+.luv-vendors .luv-vendor__details__phone, .luv-vendors .luv-vendor__details__email, .luv-vendors .luv-vendor__details__address, .luv-vendors .luv-vendor__details__links, .luv-vendors .luv-vendor__details__seemore {
   margin-bottom: 0;
   font-weight: bold !important;
 }
 
 @media only screen and (min-width: 768px) {
   .luv-vendors {
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 49% 49%;
+    column-gap: 2%;
+  }
+  .luv-vendors .luv-vendor {
+    display: grid;
+    grid-template-columns: auto 55%;
+  }
+  .luv-vendors .luv-vendor__image {
+    display: block;
+    align-self: center;
+    position: relative;
+    width: 150%;
+    z-index: -1;
   }
 }
 

@@ -614,8 +614,8 @@ function luv_Display_Vendor_By_Category($term_id) {
           <?php endif ?>
 
           <?php if( get_post_meta( get_the_ID(), 'see_more', true ) == 'Yes' ): ?>
-            <p><a href="<?php echo esc_url( get_permalink(get_the_ID()) ); ?>">
-              See more
+            <p class="luv-vendor__details__seemore"><a href="<?php echo esc_url( get_permalink(get_the_ID()) ); ?>">
+              &gt;See more
             </a></p>
           <?php endif ?>
 
