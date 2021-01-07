@@ -1,3 +1,7 @@
+.luv-category-title {
+  margin-bottom: 2rem;
+}
+
 .luv-vendors {
   display: grid;
   grid-template-columns: auto;
@@ -39,7 +43,6 @@
   content: "";
   position: absolute;
   height: 1px;
-  bottom: 0.75rem;
   width: 100%;
   left: -2%;
   border-bottom: 8px solid #7CDA24;
@@ -56,12 +59,14 @@
 }
 .luv-vendor__details a {
   color: #fff;
+  text-decoration: underline;
 }
 .luv-vendor__details p {
   font-weight: 400;
 }
 .luv-vendor__details__title {
   font-size: 22px;
+  color: #fff;
 }
 .luv-vendor__details__phone, .luv-vendor__details__email, .luv-vendor__details__address, .luv-vendor__details__links, .luv-vendor__details__seemore {
   margin-bottom: 0;

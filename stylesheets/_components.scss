@@ -9,7 +9,6 @@
       content: "";
       position: absolute;
       height: 1px;
-      bottom: 0.75rem;
       width: 100%;
       left: -2%;
       border-bottom: 8px solid $heading-underline;
@@ -30,12 +29,14 @@
     }
     a {
       color: $font-color;
+      text-decoration: underline;
     }
     p {
       font-weight: 400;
     }
     &__title {
       font-size: 22px;
+      color: $font-color;
     }
     &__phone, &__email, &__address, &__links, &__seemore {
       margin-bottom: 0;
