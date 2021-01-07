@@ -473,6 +473,7 @@ function luv_Display_Vendor_Details() {
       <div class="luv-container">
         <div class="luv-category-title">
           <h2><?php echo $cat->name; ?></h2>
+          <div class="luv-heading-underline"></div>
         </div>
         <div class="luv-vendors">
         <?php

@@ -13,10 +13,11 @@ Author URI: https://annetawamono.github.io/portfolio/
   * Enqueue css
   */
 
-function tutsplus_movie_styles() {
+function luv_Vendor_scripts() {
   wp_enqueue_style( 'luv-vendors',  plugin_dir_url( __FILE__ ) . 'css/luv-master.css' );
+  wp_enqueue_script('luv-divider',  plugin_dir_url( __FILE__ ) . 'js/luv-divider.js', array(), false, true );
 }
-add_action( 'wp_enqueue_scripts', 'tutsplus_movie_styles' );
+add_action( 'wp_enqueue_scripts', 'luv_Vendor_scripts' );
 
 // Include luv-functions.php
 require_once plugin_dir_path(__FILE__) . 'includes/luv-functions.php';
