@@ -2,10 +2,10 @@
 
 /*
 Plugin Name: Link Up Vendors
-Plugin URI: https://themefoundation.com/
+Plugin URI: https://github.com/annetawamono/linkup-vendor-plugin
 Description: A plugin to manage and display vendors on the Link Up website
 Author: Anneta Wamono
-Version: 1.0
+Version: 1.0.0
 Author URI: https://annetawamono.github.io/portfolio/
 */
 
