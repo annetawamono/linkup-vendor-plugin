@@ -51,6 +51,18 @@ function luv_Create_Vendor_Posttype() {
 add_action( 'init', 'luv_Create_Vendor_Posttype' );
 
 /**
+ * Activate plugin
+ */
+
+ function luv_Activate() {
+     // Trigger our function that registers the custom post type plugin.
+     luv_Create_Vendor_Posttype(); 
+     // Clear the permalinks after the post type has been registered.
+     flush_rewrite_rules();
+ }
+ register_activation_hook( __FILE__, 'luv_Activate' );
+
+/**
  * Create meta boxes for vendors
  */
 
