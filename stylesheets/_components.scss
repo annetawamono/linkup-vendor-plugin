@@ -50,3 +50,11 @@
     box-shadow: rgba(0,0,0,0.4) -4px 4px 5px;
   }
 }
+
+// Vendor page
+// Remove featured image on vendor page
+.nv-single-post-wrap.vendors.type-vendors.status-publish.has-post-thumbnail.hentry {
+  img {
+    display: none;
+  }
+}

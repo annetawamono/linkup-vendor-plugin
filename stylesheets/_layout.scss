@@ -16,6 +16,10 @@
 }
 
 @media #{$lg} {
+  .luv-container {
+    max-width: $max-container; 
+  }
+
   .luv-vendors {
     grid-template-columns: 49% 49%;
     column-gap: 2%;

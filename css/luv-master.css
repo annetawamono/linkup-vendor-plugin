@@ -16,6 +16,10 @@
 }
 
 @media only screen and (min-width: 768px) {
+  .luv-container {
+    max-width: 1080px;
+  }
+
   .luv-vendors {
     grid-template-columns: 49% 49%;
     column-gap: 2%;
@@ -77,6 +81,9 @@
   .luv-vendor__details {
     box-shadow: rgba(0, 0, 0, 0.4) -4px 4px 5px;
   }
+}
+.nv-single-post-wrap.vendors.type-vendors.status-publish.has-post-thumbnail.hentry img {
+  display: none;
 }
 
 /*# sourceMappingURL=luv-master.css.map */
