@@ -4,13 +4,16 @@
  * Adds top level menu link to the ACP
  */
 
+require plugin_dir_path(__FILE__) . 'luv-acp-page.php';
+
 function luv_Add_Admin_Link() {
 //todo: make plugin page
   add_menu_page(
     'Link Up Vendors', //Title
     'Link Up Vendors Settings', //Text to show on menu link
     'manage_options', //User capability requirement
-    'link-up-vendors/includes/luv-acp-page.php' //Slug for file to display when clicking link
+    'link-up-vendors', //Slug for file to display when clicking link
+    'luv_acp_page_html'
   );
 }
 add_action( 'admin_menu', 'luv_Add_Admin_Link' );
@@ -56,7 +59,7 @@ add_action( 'init', 'luv_Create_Vendor_Posttype' );
 
  function luv_Activate() {
      // Trigger our function that registers the custom post type plugin.
-     luv_Create_Vendor_Posttype(); 
+     luv_Create_Vendor_Posttype();
      // Clear the permalinks after the post type has been registered.
      flush_rewrite_rules();
  }

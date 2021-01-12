@@ -1,3 +1,6 @@
+<?php
+
+function luv_acp_page_html() { ?>
 <div class="wrap">
   <header class="title">
     <h1>LINK UP Vendors</h1>
@@ -44,4 +47,5 @@
     <h2>Developer information</h2>
     <p>Hi there! My name is Anneta and <a href="https://annetawamono.github.io/portfolio/">I'm a web designer and developer</a>. You can find the repository for this plugin on <a href="https://github.com/annetawamono/linkup-vendor-plugin">Github</a>. If you have any feedback or questions about the plugin, you can email them to me at <a href="mailto:dev@annetawamono.co.za">dev@annetawamono.co.za</a></p>
   </aside>
-</div>
+</div><?php
+} ?>
