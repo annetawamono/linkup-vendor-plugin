@@ -7,7 +7,6 @@
 require plugin_dir_path(__FILE__) . 'luv-acp-page.php';
 
 function luv_Add_Admin_Link() {
-//todo: make plugin page
   add_menu_page(
     'Link Up Vendors', //Title
     'Link Up Vendors Settings', //Text to show on menu link
@@ -46,7 +45,6 @@ function luv_Create_Vendor_Posttype() {
       'show_in_rest' => true,
       'has_archive' => true,
       'rewrite' => array( 'slug' => 'vendors' ),
-      // 'taxonomies' => array( 'vendor categories' ),
       'register_meta_box_cb' => 'luv_Create_Meta_Boxes',
     )
   );
@@ -108,7 +106,6 @@ add_action( 'admin_menu', 'luv_Create_Meta_Boxes' );
   $notes = get_post_meta( $post->ID, 'notes', true );
   $see_more = get_post_meta( $post->ID, 'see_more', true );
 
-	// nonce, actually I think it is not necessary here
 	wp_nonce_field( plugin_basename(__FILE__), 'luv_nonce' );
 
 	echo '<table class="luv-meta">
@@ -245,7 +242,6 @@ function luv_save_meta( $post_id, $post ) {
 	}
 
   //update and delete should happen for every input field
-  //there are different sanitize functions e.g. sanitize_textarea()
   if( isset( $_POST[ 'phone_number' ] ) ) {
 		update_post_meta( $post_id, 'phone_number', sanitize_text_field( $_POST[ 'phone_number' ] ) );
 	} else {
@@ -417,7 +413,6 @@ function luv_save_meta( $post_id, $post ) {
 
 	return $post_id;
 }
-//don't know why but parameters 10 and 2 allow you to pass $post to the save function
  add_action( 'save_post', 'luv_save_meta', 10, 2 );
 
 
@@ -470,10 +465,8 @@ function luv_save_meta( $post_id, $post ) {
  */
 
 function luv_Display_Vendor_Details() {
-  //doing: vendor page styling
-  //todo: use esc_url_raw() to output website url
 
-  // testing category separation
+  // separating vendors by category
 
   $args2 = array(
     'taxonomy' => 'vendors-vendor-categories',
@@ -498,8 +491,6 @@ function luv_Display_Vendor_Details() {
       </div>
     <?php
   }
-
-  // echo count($cats) . "testing cats. the slug " . $cats[0]->term_id;
 }
 add_shortcode( 'vendors', 'luv_Display_Vendor_Details' );
 
@@ -558,7 +549,6 @@ function luv_Display_Vendor_By_Category($term_id) {
           <?php if($address = get_post_meta( get_the_ID(), 'address', true )): ?>
             <p class="luv-vendor__details__address">Address:</p>
             <?php
-              // getting individual post meta
               echo wpautop( $address );
             ?>
           <?php endif ?>
