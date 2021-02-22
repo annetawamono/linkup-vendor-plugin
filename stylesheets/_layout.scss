@@ -10,14 +10,19 @@
     &__image {
       display: flex;
       justify-content: center;
-      margin-bottom: 0.5rem;
+    }
+    &__details__icons {
+      position: relative;
+      bottom: -0.5rem;
+      left: -0.3rem;
     }
   }
 }
 
 @media #{$lg} {
   .luv-container {
-    max-width: $max-container; 
+    max-width: $max-container;
+    margin: 0 auto;
   }
 
   .luv-vendors {

@@ -33,14 +33,26 @@
     }
     p {
       font-weight: 400;
+      font-size: $mob-font;
     }
     &__title {
       font-size: 22px;
       color: $font-color;
+      font-weight: bold;
     }
-    &__phone, &__email, &__address, &__links, &__seemore {
+    &__address, &__links, &__seemore {
       margin-bottom: 0;
       font-weight: bold !important;
+      padding-bottom: 0;
+    }
+    &__links__items {
+      padding-bottom: 0;
+    }
+    &__icons {
+      fill: $font-color;
+    }
+    &__seemore {
+      padding-top: 1rem;
     }
   }
 }
@@ -48,6 +60,9 @@
 @media #{$lg} {
   .luv-vendor__details {
     box-shadow: rgba(0,0,0,0.4) -4px 4px 5px;
+    p {
+      font-size: $desk-font;
+    }
   }
 }
 

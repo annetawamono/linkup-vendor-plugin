@@ -12,12 +12,17 @@
 .luv-vendors .luv-vendor__image {
   display: flex;
   justify-content: center;
-  margin-bottom: 0.5rem;
+}
+.luv-vendors .luv-vendor__details__icons {
+  position: relative;
+  bottom: -0.5rem;
+  left: -0.3rem;
 }
 
 @media only screen and (min-width: 768px) {
   .luv-container {
     max-width: 1080px;
+    margin: 0 auto;
   }
 
   .luv-vendors {
@@ -67,22 +72,37 @@
 }
 .luv-vendor__details p {
   font-weight: 400;
+  font-size: 1rem;
 }
 .luv-vendor__details__title {
   font-size: 22px;
   color: #fff;
+  font-weight: bold;
 }
-.luv-vendor__details__phone, .luv-vendor__details__email, .luv-vendor__details__address, .luv-vendor__details__links, .luv-vendor__details__seemore {
+.luv-vendor__details__address, .luv-vendor__details__links, .luv-vendor__details__seemore {
   margin-bottom: 0;
   font-weight: bold !important;
+  padding-bottom: 0;
+}
+.luv-vendor__details__links__items {
+  padding-bottom: 0;
+}
+.luv-vendor__details__icons {
+  fill: #fff;
+}
+.luv-vendor__details__seemore {
+  padding-top: 1rem;
 }
 
 @media only screen and (min-width: 768px) {
   .luv-vendor__details {
     box-shadow: rgba(0, 0, 0, 0.4) -4px 4px 5px;
   }
+  .luv-vendor__details p {
+    font-size: 0.8rem;
+  }
 }
-.nv-single-post-wrap.vendors.type-vendors.status-publish.has-post-thumbnail.hentry img {
+.vendors.type-vendors.status-publish.has-post-thumbnail.hentry img {
   display: none;
 }
 
